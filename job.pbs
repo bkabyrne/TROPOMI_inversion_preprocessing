@@ -1,0 +1,35 @@
+#!/bin/bash
+#PBS -N TROPOMI_preprocess
+#PBS -l select=1:ncpus=8:model=ivy
+#PBS -l site=needed=/nobackupp19
+#PBS -l walltime=120:00:00
+#PBS -V
+#PBS -j oe
+#PBS -o log.txt
+
+cd $PBS_O_WORKDIR
+
+module purge
+
+# Load the module environment                  
+module use /swbuild/analytix/tools/modulefiles
+module load miniconda3/v4
+
+# Set environment variables for PyTorch
+export OMP_NUM_THREADS=128
+export MKL_NUM_THREADS=128
+
+# Initialize Conda
+eval "$(conda shell.bash hook)"
+conda activate pyt2_3
+pip install --user netCDF4
+
+python download_and_process_TROPOMI.py
+
+# Deactivate Conda environment                            
+conda deactivate
+
+# End of script
+
+
+

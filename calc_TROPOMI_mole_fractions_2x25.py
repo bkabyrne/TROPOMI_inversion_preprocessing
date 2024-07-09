@@ -1,4 +1,3 @@
-from mpl_toolkits.basemap import Basemap, cm                                                                   
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
