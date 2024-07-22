@@ -60,6 +60,9 @@ path_processed_TROPOMI='/nobackup/bbyrne1/TROPOMI_XCO_2x25/'
 start_date = datetime.date(2023, 1, 1)
 end_date = datetime.date.today() - datetime.timedelta(weeks=1)
 
+# Load the CDO module
+run_command('module load cdo')
+
 # Loop through each day from start_date to end_date
 date = start_date
 while date <= end_date:
