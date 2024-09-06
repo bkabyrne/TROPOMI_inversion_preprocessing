@@ -1,5 +1,21 @@
-# TROPOMI_inversion_preprocessing
+# README
 
+
+**Preprocessing scripts to prepare TROPOMI carbon monoxide for assimilation**
+
+**contact: Brendan Byrne**
+
+**email: brendan.k.byrne@jpl.nasa.gov**
+
+---
+
+Copyright 2024, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
+ 
+This software may be subject to U.S. export control laws. By accepting this software, the user agrees to comply with all applicable U.S. export laws and regulations. User has the responsibility to obtain export licenses, or other export authority as may be required before exporting such information to foreign countries or providing access to foreign persons.
+
+## Overview
+
+This software automates the downloading of TROPOMI carbon monoxide data, computes 2 x 2.5 degree super-obs, converts data format to one assimilable my CMS-Flux, and writes the data to the format required by CMS-Flux
 
 ## Contents
 

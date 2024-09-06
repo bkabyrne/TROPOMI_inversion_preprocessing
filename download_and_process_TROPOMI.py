@@ -57,7 +57,7 @@ def run_command(command):
 # Define the base path for the directories and the start date
 path_raw_TROPOMI='/nobackupp19/bbyrne1/Test_TROPOMI_download/PRODUCT/'
 path_processed_TROPOMI='/nobackup/bbyrne1/TROPOMI_XCO_2x25/'
-start_date = datetime.date(2023, 1, 1)
+start_date = datetime.date(2024, 1, 1)
 end_date = datetime.date.today() - datetime.timedelta(weeks=1)
 
 # Load the CDO module
@@ -86,7 +86,7 @@ while date <= end_date:
             print(f"Directory {dir_path} is empty. Running commands.")
             
             # Run download_tropomi_data from download_TROPOMI.sh
-            download_command = f"bash download_TROPOMI.sh {date.year} {date.month:02d} {date.day:02d}"
+            download_command = f"bash /nobackupp19/bbyrne1/TROPOMI_inversion_preprocessing/download_TROPOMI.sh {date.year} {date.month:02d} {date.day:02d}"
             run_command(download_command)
 
         calc_TROPOMI_mole_fractions_2x25.make_TROPOMI_obs(path_raw_TROPOMI, path_processed_TROPOMI, date, '_OFFL_')

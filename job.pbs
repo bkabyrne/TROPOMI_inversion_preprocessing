@@ -22,7 +22,7 @@ export MKL_NUM_THREADS=128
 # Initialize Conda
 eval "$(conda shell.bash hook)"
 conda activate pyt2_3
-pip install --user netCDF4
+pip install --user netCDF4 s3cmd
 
 python /nobackupp19/bbyrne1/TROPOMI_inversion_preprocessing/download_and_process_TROPOMI.py
 
