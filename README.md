@@ -38,3 +38,7 @@ This software automates the downloading of TROPOMI carbon monoxide data, compute
 > Regrid Kazu's 3D CO production fields
 - regrid_Kazus_OH_field.py
 > Regrid Kazu's 3D OH fields
+- get_GFED4s_CO_emissions.py
+> Calculate CO emissions from GFED inventory
+- write_total_prior.py
+> Combine FF, BB, and biogenic CO emissions into a single flux

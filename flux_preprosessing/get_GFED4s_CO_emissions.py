@@ -17,7 +17,7 @@ sources      = 'SAVA','BORF','TEMF','DEFO','PEAT','AGRI'
 # first download the GFED4.1s files and the GFED4_Emission_Factors.txt
 # to your computer and adjust the directory where you placed them below
 
-directory    = '/u/bbyrne1/fire_emissions_v4_R1_1293/data'
+directory    = '/nobackupp19/bbyrne1/fire_emissions_v4_R1_1293/data'
 
 
 """
@@ -70,7 +70,7 @@ for year in range(start_year, end_year+1):
         CO_emissions2 = np.zeros((366,8,720, 1440))    
         diurnal2 = np.zeros((366,8,720, 1440))    
 
-    print('/u/bbyrne1/fire_emissions_v4_R1_1293/data/GFED4.1s_2023_beta_20240607.hdf5')
+    print('/nobackupp19/bbyrne1/fire_emissions_v4_R1_1293/data/GFED4.1s_2023_beta_20240607.hdf5')
     string = directory+'/GFED4.1s_'+str(year)+'_beta_20240607.hdf5'
     print(string)
     f = h5py.File(string, 'r')
