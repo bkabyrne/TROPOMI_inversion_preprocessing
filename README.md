@@ -19,6 +19,7 @@ This software automates the downloading of TROPOMI carbon monoxide data, compute
 
 ## Contents
 
+### TROPOMI XCO PRE-PROCESSING
 - submit_job.sh
 > Submits job.pbs to the compute node queue
 - job.pbs
@@ -30,4 +31,10 @@ This software automates the downloading of TROPOMI carbon monoxide data, compute
 - calc_TROPOMI_mole_fractions_2x25.py
 > functions to calculate TROPOMI XCO obs
 - create_folder_TROPOMI.py
-> function to move TROPOMI data into new directory format (was only used once) 
+> function to move TROPOMI data into new directory format (was only used once)
+
+### FLUX PRE-PROCESSING (./flux_preprosessing/)
+- regrid_Kazus_CO_production.py
+> Regrid Kazu's 3D CO production fields
+- regrid_Kazus_OH_field.py
+> Regrid Kazu's 3D OH fields
