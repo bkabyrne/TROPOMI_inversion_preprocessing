@@ -42,3 +42,7 @@ This software automates the downloading of TROPOMI carbon monoxide data, compute
 > Calculate CO emissions from GFED inventory
 - write_total_prior.py
 > Combine FF, BB, and biogenic CO emissions into a single flux
+
+### FLUX POST-PROCESSING (./postprosessing/)
+- write_posterior_fire_7day.py
+> Writes the posterior CO and CO2 fluxes from MOPITT and TROPOMI inversions
