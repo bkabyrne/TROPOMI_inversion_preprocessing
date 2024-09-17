@@ -1,6 +1,5 @@
 # README
 
-
 **Preprocessing scripts to prepare TROPOMI carbon monoxide for assimilation**
 
 **contact: Brendan Byrne**
@@ -32,6 +31,10 @@ This software automates the downloading of TROPOMI carbon monoxide data, compute
 > functions to calculate TROPOMI XCO obs
 - create_folder_TROPOMI.py
 > function to move TROPOMI data into new directory format (was only used once)
+
+### MOPITT XCO PRE-PROCESSING
+- MOPITT_v9_Log.pro
+> function to create L2# XCO from MOPITT data
 
 ### FLUX PRE-PROCESSING (./flux_preprosessing/)
 - regrid_Kazus_CO_production.py
