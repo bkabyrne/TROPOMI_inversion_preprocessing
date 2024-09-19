@@ -1,6 +1,6 @@
 import os
 import datetime
-from subprocess import call
+import subprocess
 import calc_TROPOMI_mole_fractions_2x25
 
 def directory_exists(path):
@@ -31,7 +31,7 @@ def directory_is_empty(path):
     """
     return not any(os.scandir(path))
 
-def date_to_path(path_in,date):
+def date_to_path(path_in, date):
     """
     Convert a date to the corresponding directory path.
     
@@ -40,41 +40,46 @@ def date_to_path(path_in,date):
     """
     return os.path.join(path_in, date.strftime("%Y/%m/%d"))
 
-def run_command(command):
+def run_command(command, use_shell=False):
     """
-    Run an external command using the shell.
+    Run an external command safely.
     
-    :param command: The command string to run.
+    :param command: List of command arguments or a string (if use_shell=True).
+    :param use_shell: Whether to use the shell to run the command.
     :return: The exit status of the command.
     """
-    result = call(command, shell=True)
-    if result != 0:
-        print(f"Command failed: {command}")
-    return result
-
+    try:
+        if use_shell:
+            result = subprocess.run(command, shell=True, check=True)
+        else:
+            result = subprocess.run(command, check=True)
+        return result.returncode
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed: {e}")
+        return e.returncode
 
 
 # Define the base path for the directories and the start date
-path_raw_TROPOMI='/nobackupp19/bbyrne1/Test_TROPOMI_download/PRODUCT/'
-path_processed_TROPOMI='/nobackup/bbyrne1/TROPOMI_XCO_2x25/'
+path_raw_TROPOMI = '/nobackupp19/bbyrne1/Test_TROPOMI_download/PRODUCT/'
+path_processed_TROPOMI = '/nobackup/bbyrne1/TROPOMI_XCO_2x25/'
 start_date = datetime.date(2024, 1, 1)
 end_date = datetime.date.today() - datetime.timedelta(weeks=1)
 
-# Load the CDO module
-run_command('module load cdo')
+# Load the CDO module safely (this requires shell=True to work)
+run_command('module load cdo', use_shell=True)
 
 # Loop through each day from start_date to end_date
 date = start_date
 while date <= end_date:
 
-    # File path for TROPOMI super-obs on given date
-    file_out = date_to_path(path_processed_TROPOMI,date)+'.nc'
+    # File path for TROPOMI super-obs on the given date
+    file_out = date_to_path(path_processed_TROPOMI, date) + '.nc'
 
     # If super-obs don't exist
     if not os.path.isfile(file_out):
 
         # Path to raw TROPOMI data
-        dir_path = date_to_path(path_raw_TROPOMI,date)
+        dir_path = date_to_path(path_raw_TROPOMI, date)
     
         # Create the directory if it doesn't exist
         create_directory(dir_path)
@@ -85,8 +90,17 @@ while date <= end_date:
             # Directory exists but is empty, run the necessary commands
             print(f"Directory {dir_path} is empty. Running commands.")
             
-            # Run download_tropomi_data from download_TROPOMI.sh
-            download_command = f"bash /nobackupp19/bbyrne1/TROPOMI_inversion_preprocessing/download_TROPOMI.sh {date.year} {date.month:02d} {date.day:02d}"
+            # Ensure year, month, and day are sanitized as they are integers.
+            year = f"{date.year}"
+            month = f"{date.month:02d}"
+            day = f"{date.day:02d}"
+            
+            # Run download_tropomi_data from download_TROPOMI.sh safely using a list
+            download_command = [
+                'bash', 
+                '/nobackupp19/bbyrne1/TROPOMI_inversion_preprocessing/download_TROPOMI.sh', 
+                year, month, day
+            ]
             run_command(download_command)
 
         calc_TROPOMI_mole_fractions_2x25.make_TROPOMI_obs(path_raw_TROPOMI, path_processed_TROPOMI, date, '_OFFL_')

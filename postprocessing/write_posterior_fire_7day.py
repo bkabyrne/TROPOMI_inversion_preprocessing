@@ -12,6 +12,7 @@ from matplotlib.patches import Polygon
 from math import pi, cos, radians
 import numpy.matlib
 from pylab import *
+from datetime import datetime, timedelta
 
 '''                                         
 This program writes posterior fire emissions for MOPITT and TROPOMI inversions (7-day opt)
@@ -144,6 +145,10 @@ def write_dataset(nc_out, CO2_Flux_prior, CO2_Flux_post, CO_Flux_prior, CO_Flux_
     # Read grid to write out area (m2)
     grid_area_2x25 = calculate_2x25_grid_area()
     #
+    # Generate time array (days since the start of the year)
+    start_date = datetime(year, 1, 1)
+    time_values = [(start_date + timedelta(days=i)).timetuple().tm_yday - 1 for i in range(days_in_year)]
+    #
     # Write out data
     dataset = Dataset(nc_out,'w')
     print(nc_out)
@@ -155,20 +160,27 @@ def write_dataset(nc_out, CO2_Flux_prior, CO2_Flux_post, CO_Flux_prior, CO_Flux_
     gridareas.units = 'm2'
     latss = dataset.createVariable('latitude', np.float64, ('lat',))
     latss[:] = lat
+    latss.units = 'degrees'
     lonss = dataset.createVariable('longitude', np.float64, ('lon',))
     lonss[:] = lon
+    lonss.units = 'degrees'
+    # Create time variable and assign values
+    time_var = dataset.createVariable('time', np.float64, ('time',))
+    time_var[:] = time_values
+    time_var.units = f'days since {year}-01-01 00:00:00'
+    time_var.calendar = 'standard'
     CO2_priors = dataset.createVariable('CO2_prior', np.float64, ('time','lat','lon'))
     CO2_priors[:,:,:] = CO2_Flux_prior
-    CO2_priors.units = 'gC/m2/day'
+    CO2_priors.units = 'gC m-2 day-1'
     CO2_posts = dataset.createVariable('CO2_post', np.float64, ('time','lat','lon'))
     CO2_posts[:,:,:] = CO2_Flux_post
-    CO2_posts.units = 'gC/m2/day'
+    CO2_posts.units = 'gC m-2 day-1'
     CO_priors = dataset.createVariable('CO_prior', np.float64, ('time','lat','lon'))
     CO_priors[:,:,:] = CO_Flux_prior
-    CO_priors.units = 'gC/m2/day'
+    CO_priors.units = 'gC m-2 day-1'
     CO_posts = dataset.createVariable('CO_post', np.float64, ('time','lat','lon'))
     CO_posts[:,:,:] = CO_Flux_post
-    CO_posts.units = 'gC/m2/day'
+    CO_posts.units = 'gC m-2 day-1'
     dataset.close()
 
 
@@ -233,7 +245,7 @@ def run_optimized_fluxes(yyyy, sfnum, obsType, dir_out):
         raise RuntimeError(f"Error calculating fluxes. Details: {e}")
     
     # Prepare the output netCDF file path
-    ncfile_out = os.path.join(dir_out, f'Inversion_{obsType}_{str(yyyy).zfill(4)}.nc')
+    ncfile_out = os.path.join(dir_out, f'CMSFluxFire_{obsType}_{str(yyyy).zfill(4)}_v1.nc')
     print(f"Writing output to {ncfile_out}")
 
     try:
@@ -246,7 +258,7 @@ def run_optimized_fluxes(yyyy, sfnum, obsType, dir_out):
         
 if __name__ == "__main__":
 
-    dir_out = '/nobackupp19/bbyrne1/Global_CO_inversion_results/'
+    dir_out = '/nobackupp19/bbyrne1/CMSFluxFire_v1/'
 
     run_optimized_fluxes(2019,39,'TROPOMI',dir_out)
     run_optimized_fluxes(2020,39,'TROPOMI',dir_out)
