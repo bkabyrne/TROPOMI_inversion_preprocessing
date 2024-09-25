@@ -35,6 +35,8 @@ This software automates the downloading of TROPOMI carbon monoxide data, compute
 ### MOPITT XCO PRE-PROCESSING
 - MOPITT_v9_Log.pro
 > function to create L2# XCO from MOPITT data
+- rewrite_MOPITT_wLatLon_cuttoff.py
+> Correct a problem with MOPITT_v9_Log.pro output. The uncertainties are incorrect and need to be corrected
 
 ### FLUX PRE-PROCESSING (./flux_preprosessing/)
 - regrid_Kazus_CO_production.py
